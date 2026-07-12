@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Creator Camp — Bangun Website, Otomasi Bisnis & Video Promosi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans for Premium High-Tech Feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigoDark: '#080A16',
+                        indigoCard: '#10142D',
+                        indigoMuted: '#1A1F45',
+                        ivoryWhite: '#FAF9F5',
+                        ivoryCard: '#F3F1E9',
+                        goldPrimary: '#E5B842',
+                        goldSecondary: '#C5992B',
+                        goldGlow: 'rgba(229, 184, 66, 0.4)'
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Animations & Smooth Elements */
+        @keyframes pulseGold {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(229, 184, 66, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 0 30px rgba(229, 184, 66, 0.6); }
+        }
+        .pulse-gold {
+            animation: pulseGold 3s infinite ease-in-out;
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        .float-slow {
+            animation: floatSlow 6s infinite ease-in-out;
+        }
+        /* Custom scrollbar matching Indigo/Gold */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080A16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5B842;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C5992B;
+        }
+    </style>
+</head>
+<body class="bg-indigoDark text-slate-100 font-sans overflow-x-hidden">
+
+    <!-- Sticky Glassmorphism Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-indigoDark/80 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-goldPrimary via-indigo-500 to-indigo-900 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                    <span class="text-indigoDark font-extrabold text-lg">AI</span>
+                </div>
+                <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-ivoryWhite to-goldPrimary bg-clip-text text-transparent">
+                    Creator Camp
+                </span>
+            </a>
+
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#target" class="text-slate-300 hover:text-goldPrimary font-medium text-sm transition-colors">Target Peserta</a>
+                <a href="#mentors" class="text-slate-300 hover:text-goldPrimary font-medium text-sm transition-colors">Mentor</a>
+                <a href="#jadwal" class="text-slate-300 hover:text-goldPrimary font-medium text-sm transition-colors">Jadwal Sesi</a>
+                <a href="#sertifikat" class="text-slate-300 hover:text-goldPrimary font-medium text-sm transition-colors">Sertifikasi</a>
+                <a href="#paket" class="text-slate-300 hover:text-goldPrimary font-medium text-sm transition-colors">Paket Belajar</a>
+            </nav>
+
+            <!-- Action Button & Hamburger Toggle -->
+            <div class="flex items-center space-x-4">
+                <!-- Desktop Action Button -->
+                <div class="hidden md:block">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScqYdMvX3tjwPsDk6BtJ4LRMpehJAzLTOp5QHe6ZmEjvTTn6A/viewform?usp=dialog" 
+                       target="_blank"
+                       class="inline-flex items-center px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold bg-gradient-to-r from-goldPrimary to-yellow-600 text-indigoDark shadow-lg hover:shadow-goldPrimary/40 transform hover:-translate-y-0.5 transition-all">
+                        Daftar Sekarang <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger Button (Only Visible on Mobile/Tablet) -->
+                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-goldPrimary focus:outline-none text-2xl transition-all duration-300 p-2 rounded-lg hover:bg-white/5" aria-label="Toggle Menu">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-dropdown" class="hidden md:hidden bg-indigoDark/95 border-b border-white/10 backdrop-blur-xl transition-all duration-300 px-4 pt-2 pb-6 space-y-2 shadow-2xl">
+            <a href="#target" class="block text-slate-300 hover:text-goldPrimary font-semibold py-2.5 px-4 rounded-xl hover:bg-white/5 transition-all mobile-link">Target Peserta</a>
+            <a href="#mentors" class="block text-slate-300 hover:text-goldPrimary font-semibold py-2.5 px-4 rounded-xl hover:bg-white/5 transition-all mobile-link">Mentor</a>
+            <a href="#jadwal" class="block text-slate-300 hover:text-goldPrimary font-semibold py-2.5 px-4 rounded-xl hover:bg-white/5 transition-all mobile-link">Jadwal Sesi</a>
+            <a href="#sertifikat" class="block text-slate-300 hover:text-goldPrimary font-semibold py-2.5 px-4 rounded-xl hover:bg-white/5 transition-all mobile-link">Sertifikasi</a>
+            <a href="#paket" class="block text-slate-300 hover:text-goldPrimary font-semibold py-2.5 px-4 rounded-xl hover:bg-white/5 transition-all mobile-link">Paket Belajar</a>
+            
+            <div class="pt-4 border-t border-white/5 px-4">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScqYdMvX3tjwPsDk6BtJ4LRMpehJAzLTOp5QHe6ZmEjvTTn6A/viewform?usp=dialog" 
+                   target="_blank"
+                   class="w-full text-center inline-flex items-center justify-center px-5 py-3 rounded-2xl font-bold bg-gradient-to-r from-goldPrimary to-yellow-600 text-indigoDark shadow-lg shadow-goldPrimary/20">
+                    Daftar Sekarang <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-sm"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: HERO (Dark Indigo Theme with Interactive Web-Node Canvas) -->
+    <section class="relative min-h-screen pt-32 pb-20 flex items-center overflow-hidden">
+        <!-- Interactive Node Canvas Background -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-auto opacity-40 z-0"></canvas>
+        
+        <!-- Ambient Radial Glows -->
+        <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-indigo-600/20 blur-3xl z-0"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 rounded-full bg-goldPrimary/5 blur-3xl z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Side: Dynamic Text & Copy -->
+            <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                <!-- Floating Promo Badge -->
+                <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-indigoMuted border border-indigo-500/30 text-goldPrimary tracking-wide uppercase shadow-inner">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse mr-2.5"></span>
+                    🚀 AI Creator Camp Training Program
+                </span>
+                
+                <!-- Main Headline -->
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-white tracking-tight">
+                    Bangun Website, Otomasi Bisnis & Video Promosi <br class="hidden sm:inline">
+                    <span class="bg-gradient-to-r from-goldPrimary via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+                        Dalam 1 Minggu!
+                    </span>
+                </h1>
+                
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0">
+                    Program training intensif berbasis AI untuk mendongkrak produktivitas praktis harianmu. Dirancang khusus untuk mahasiswa, freelancer, dan pelaku UMKM pemula yang ingin hasil profesional tanpa perlu skill teknis mendalam.
+                </p>
+
+                <!-- Checklist Features Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 max-w-xl mx-auto lg:mx-0">
+                    <div class="flex items-center space-x-3 text-slate-200 bg-indigoMuted/40 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-950 text-goldPrimary"><i class="fa-solid fa-video"></i></span>
+                        <span class="text-sm font-medium">Live 4 Sesi Zoom / Meet</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-slate-200 bg-indigoMuted/40 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-950 text-goldPrimary"><i class="fa-solid fa-qrcode"></i></span>
+                        <span class="text-sm font-medium">Sertifikat Resmi + QR Verif</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-slate-200 bg-indigoMuted/40 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-950 text-goldPrimary"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                        <span class="text-sm font-medium">Rekaman Sesi Selamanya</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-slate-200 bg-indigoMuted/40 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-950 text-goldPrimary"><i class="fa-solid fa-user-tie"></i></span>
+                        <span class="text-sm font-medium">Konseling Privat 1-on-1 VIP</span>
+                    </div>
+                </div>
+
+                <!-- Action Button Trigger -->
+                <div class="pt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScqYdMvX3tjwPsDk6BtJ4LRMpehJAzLTOp5QHe6ZmEjvTTn6A/viewform?usp=dialog" 
+                       target="_blank"
+                       class="pulse-gold w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-goldPrimary via-yellow-500 to-amber-500 text-indigoDark font-extrabold text-base tracking-wide flex items-center justify-center space-x-3 transition-transform duration-300">
+                        <span>AMBIL SLOT — DISKON EARLY BIRD 50%</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Side: Beautiful Glassmorphic Portal / Interactive Visual Element -->
+            <div class="lg:col-span-5 relative flex justify-center items-center z-10">
+                <div class="relative w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-goldPrimary/10 to-indigo-500/20 flex items-center justify-center p-8 border border-white/10 backdrop-blur-2xl float-slow shadow-2xl">
+                    <!-- Rotating Gold Rings -->
+                    <div class="absolute inset-2 rounded-full border-2 border-dashed border-goldPrimary/30 animate-[spin_40s_linear_infinite]"></div>
+                    <div class="absolute inset-10 rounded-full border border-indigo-400/20 animate-[spin_20s_linear_infinite_reverse]"></div>
+                    
+                    <!-- Center Visual Node Hub -->
+                    <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-indigoDark/80 border border-goldPrimary/30 flex flex-col justify-center items-center text-center p-6 relative z-10 shadow-2xl">
+                        <i class="fa-solid fa-brain text-5xl text-goldPrimary mb-4 animate-pulse"></i>
+                        <span class="text-xs uppercase tracking-widest text-slate-400">Integrated AI Hub</span>
+                        <h4 class="font-bold text-lg text-white mt-1">Creator Suite</h4>
+                        <div class="flex items-center gap-2 mt-3">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                            <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wide">Sistem Siap</span>
+                        </div>
+                    </div>
+
+                    <!-- Surrounding Interactive Floating Badges -->
+                    <div class="absolute -top-4 left-6 bg-indigoCard/90 border border-goldPrimary/40 px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                        <i class="fa-solid fa-code text-goldPrimary"></i> No-Code Web
+                    </div>
+                    <div class="absolute right-[-10px] top-1/4 bg-indigoCard/90 border border-indigo-400/30 px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                        <i class="fa-solid fa-gear text-indigo-400"></i> Automations
+                    </div>
+                    <div class="absolute bottom-[-10px] left-1/4 bg-indigoCard/90 border border-goldPrimary/40 px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                        <i class="fa-solid fa-clapperboard text-goldPrimary"></i> Video Gen AI
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 2: TARGET AUDIENS (Ivory White Theme) -->
+    <section id="target" class="py-24 bg-ivoryWhite text-indigoDark relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <span class="text-goldSecondary uppercase tracking-widest font-extrabold text-xs">SOLUSI PRODUKTIF UNTUKMU</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-indigoDark">Apakah Ini Masalahmu?</h2>
+                <div class="w-24 h-1 bg-goldPrimary mx-auto rounded-full"></div>
+                <p class="text-base sm:text-lg text-slate-700 font-medium">
+                    Pernah nggak kamu ngerasa pengen punya website bisnis sendiri atau bikin konten video yang rapi, tapi langsung mundur karena mikirin coding yang pusing dan editing yang makan waktu berhari-hari?
+                </p>
+            </div>
+
+            <!-- 3 Interactive Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="group bg-ivoryCard hover:bg-indigoDark hover:text-white p-8 rounded-3xl border border-indigo-900/10 hover:border-goldPrimary/40 transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-2 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-indigoDark text-goldPrimary flex items-center justify-center text-2xl group-hover:bg-goldPrimary group-hover:text-indigoDark transition-colors">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold tracking-tight">Mahasiswa</h3>
+                        <p class="text-sm text-slate-600 group-hover:text-slate-300 leading-relaxed">
+                            Ingin punya portofolio digital berkualitas industri yang dilirik rekruter/klien global tanpa harus belajar backend/frontend developer bertahun-tahun.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-slate-200 group-hover:border-white/10 mt-6 flex justify-between items-center text-xs font-bold text-goldSecondary">
+                        <span>LEARN AI STRATEGY</span>
+                        <i class="fa-solid fa-circle-arrow-right text-lg"></i>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group bg-ivoryCard hover:bg-indigoDark hover:text-white p-8 rounded-3xl border border-indigo-900/10 hover:border-goldPrimary/40 transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-2 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-indigoDark text-goldPrimary flex items-center justify-center text-2xl group-hover:bg-goldPrimary group-hover:text-indigoDark transition-colors">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold tracking-tight">Freelancer</h3>
+                        <p class="text-sm text-slate-600 group-hover:text-slate-300 leading-relaxed">
+                            Ingin kerja 3x lebih cepat dan melipatgandakan penawaran project klien secara paralel menggunakan bantuan efisiensi dari tools AI generatif.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-slate-200 group-hover:border-white/10 mt-6 flex justify-between items-center text-xs font-bold text-goldSecondary">
+                        <span>MULTITASKING ENABLED</span>
+                        <i class="fa-solid fa-circle-arrow-right text-lg"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group bg-ivoryCard hover:bg-indigoDark hover:text-white p-8 rounded-3xl border border-indigo-900/10 hover:border-goldPrimary/40 transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-2 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-indigoDark text-goldPrimary flex items-center justify-center text-2xl group-hover:bg-goldPrimary group-hover:text-indigoDark transition-colors">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold tracking-tight">UMKM Pemula</h3>
+                        <p class="text-sm text-slate-600 group-hover:text-slate-300 leading-relaxed">
+                            Ingin menghemat jutaan rupiah biaya operasional agensi dengan memproduksi landing page dan video materi promosi produk mandiri tanpa ribet.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-slate-200 group-hover:border-white/10 mt-6 flex justify-between items-center text-xs font-bold text-goldSecondary">
+                        <span>MAXIMIZE PROFIT</span>
+                        <i class="fa-solid fa-circle-arrow-right text-lg"></i>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: MENTORS & PRACTITIONERS (Dark Indigo Theme) -->
+    <section id="mentors" class="py-24 bg-indigoDark text-white relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-goldPrimary/30 to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-20">
+                <span class="text-goldPrimary uppercase tracking-widest font-extrabold text-xs">BELAJAR DARI AHLINYA</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">Meet Your Mentors</h2>
+                <div class="w-24 h-1 bg-goldPrimary mx-auto rounded-full"></div>
+                <p class="text-slate-300 text-sm sm:text-base">
+                    Dibimbing langsung oleh para praktisi, pencipta konten, dan spesialis otomatisasi bisnis yang aktif di industri teknologi.
+                </p>
+            </div>
+
+            <!-- Profile Cards Grid (4 Columns) with updated anti-cropping and correct image paths -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Mentor 1: Izaleven (Foto 4: Paisley Vest Guy) -->
+                <div class="bg-indigoCard rounded-3xl border border-white/5 overflow-hidden group hover:border-goldPrimary/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative">
+                    <div>
+                        <!-- Container with object-top and aspect ratios to prevent portrait cutoff on mobile -->
+                        <div class="relative h-72 sm:h-80 md:h-64 lg:h-72 bg-gradient-to-b from-indigoMuted to-indigoCard flex items-center justify-center overflow-hidden cursor-pointer mentor-photo" data-name="Izaleven">
+                            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(229,184,66,0.15),transparent)]"></div>
+                            <!-- Swapped to Foto 4 with Object-top anti-crop alignment -->
+                            <img src="ChatGPT Image 12 Jul 2026, 14.03.43.png" 
+                                 onerror="this.src='https://placehold.co/400x500/10142D/E5B842?text=Izaleven'"
+                                 alt="Izaleven" 
+                                 class="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 z-10">
+                            <div class="absolute bottom-4 left-4 bg-indigoDark/90 border border-goldPrimary/30 px-3 py-1 rounded-full text-[10px] font-bold text-goldPrimary tracking-widest uppercase z-10">
+                                STORYTELLING
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold flex items-center gap-2">
+                                    Izaleven 
+                                    <a href="https://www.instagram.com/izaleven_?igsh=c280ZjRodHJvbmFx" target="_blank" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-tr from-yellow-500 via-red-500 to-purple-600 text-white text-[10px] hover:scale-110 transition-transform">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </a>
+                                </h3>
+                                <p class="text-xs text-slate-400">Founder Nevel Studio & Storyteller</p>
+                            </div>
+                            
+                            <ul class="space-y-2.5 text-xs text-slate-300">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-goldPrimary mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>3+ Tahun</strong> memimpin industri kreatif melalui pengelolaan brand Nevel Studio.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-goldPrimary mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>50K+ Audience</strong> yang dijangkau lewat strategi narasi digital & persuasif.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-goldPrimary mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>100+ UMKM & Kreator</strong> dibantu menyusun cerita brand berkonversi tinggi.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mentor 2: Tiara Ann (Foto 2: Glasses Girl) -->
+                <div class="bg-indigoCard rounded-3xl border border-white/5 overflow-hidden group hover:border-goldPrimary/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative">
+                    <div>
+                        <div class="relative h-72 sm:h-80 md:h-64 lg:h-72 bg-gradient-to-b from-indigoMuted to-indigoCard flex items-center justify-center overflow-hidden cursor-pointer mentor-photo" data-name="Tiara Ann">
+                            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.15),transparent)]"></div>
+                            <!-- Swapped to Foto 2 with Object-top anti-crop alignment -->
+                            <img src="ChatGPT Image 12 Jul 2026, 13.24.34.png" 
+                                 onerror="this.src='https://placehold.co/400x500/10142D/E5B842?text=Tiara+Ann'"
+                                 alt="Tiara Ann" 
+                                 class="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 z-10">
+                            <div class="absolute bottom-4 left-4 bg-indigoDark/90 border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-slate-300 tracking-widest uppercase z-10">
+                                WEB NO-CODE
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold flex items-center gap-2">
+                                    Tiara Ann
+                                    <a href="https://www.instagram.com/tiatiara_tiwie?igsh=MWQzZmswMjM3ZHMzbQ==" target="_blank" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-tr from-yellow-500 via-red-500 to-purple-600 text-white text-[10px] hover:scale-110 transition-transform">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </a>
+                                </h3>
+                                <p class="text-xs text-slate-400">Web & No-Code Creator</p>
+                            </div>
+                            
+                            <ul class="space-y-2.5 text-xs text-slate-300">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-indigo-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>3+ Tahun</strong> pengalaman sebagai pengembang web berbasis no-code.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-indigo-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>150+ Landing Page</strong> komersial sukses meluncur skala nasional.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-indigo-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>30% Efisiensi Waktu</strong> pembuatan aset digital dengan AI generatif.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mentor 3: Briano Ferari (Foto 1: Striped Vest Guy) -->
+                <div class="bg-indigoCard rounded-3xl border border-white/5 overflow-hidden group hover:border-goldPrimary/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative">
+                    <div>
+                        <div class="relative h-72 sm:h-80 md:h-64 lg:h-72 bg-gradient-to-b from-indigoMuted to-indigoCard flex items-center justify-center overflow-hidden cursor-pointer mentor-photo" data-name="Briano Ferari">
+                            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(229,184,66,0.15),transparent)]"></div>
+                            <!-- Swapped to Foto 1 with Object-top anti-crop alignment -->
+                            <img src="ChatGPT Image Jul 12, 2026, 02_48_55 PM.png" 
+                                 onerror="this.src='https://placehold.co/400x500/10142D/E5B842?text=Briano+Ferari'"
+                                 alt="Briano Ferari" 
+                                 class="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 z-10">
+                            <div class="absolute bottom-4 left-4 bg-indigoDark/90 border border-goldPrimary/30 px-3 py-1 rounded-full text-[10px] font-bold text-goldPrimary tracking-widest uppercase z-10">
+                                AUTOMATION
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold flex items-center gap-2">
+                                    Briano Ferari
+                                    <a href="https://www.instagram.com/darkthroneferra?igsh=MWprOWZlcXdyNG10cw==" target="_blank" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-tr from-yellow-500 via-red-500 to-purple-600 text-white text-[10px] hover:scale-110 transition-transform">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </a>
+                                </h3>
+                                <p class="text-xs text-slate-400">AI Business Automation Specialist</p>
+                            </div>
+                            
+                            <ul class="space-y-2.5 text-xs text-slate-300">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-goldPrimary mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>4+ Tahun</strong> mendesain arsitektur otomatisasi logistik & retail.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-goldPrimary mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>10+ Tools AI</strong> dikuasai untuk kontrol stok otomatis & operasional.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-goldPrimary mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>50M+ Rupiah</strong> estimasi penghematan biaya bulanan dari automation.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mentor 4: Ridhowi Ans (Foto 3: Turtleneck Guy) -->
+                <div class="bg-indigoCard rounded-3xl border border-white/5 overflow-hidden group hover:border-goldPrimary/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative">
+                    <div>
+                        <div class="relative h-72 sm:h-80 md:h-64 lg:h-72 bg-gradient-to-b from-indigoMuted to-indigoCard flex items-center justify-center overflow-hidden cursor-pointer mentor-photo" data-name="Ridhowi Ans">
+                            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.15),transparent)]"></div>
+                            <!-- Swapped to Foto 3 with Object-top anti-crop alignment -->
+                            <img src="ChatGPT Image 12 Jul 2026, 13.44.45.png" 
+                                 onerror="this.src='https://placehold.co/400x500/10142D/E5B842?text=Ridhowi+Ans'"
+                                 alt="Ridhowi Ans" 
+                                 class="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 z-10">
+                            <div class="absolute bottom-4 left-4 bg-indigoDark/90 border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-slate-300 tracking-widest uppercase z-10">
+                                VIDEO GENERATOR
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold flex items-center gap-2">
+                                    Ridhowi Ans
+                                    <a href="https://www.instagram.com/rdhoanshari?igsh=MXd4am9wbmgzb3dpNQ==" target="_blank" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-tr from-yellow-500 via-red-500 to-purple-600 text-white text-[10px] hover:scale-110 transition-transform">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </a>
+                                </h3>
+                                <p class="text-xs text-slate-400">AI Content Creator</p>
+                            </div>
+                            
+                            <ul class="space-y-2.5 text-xs text-slate-300">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-indigo-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>2+ Tahun</strong> aktif memproduksi video promosi AI di TikTok & IG.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-indigo-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>1M+ Total Views</strong> organik dari video yang di-generate AI.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="text-indigo-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span><strong>10 Menit/Video</strong> rata-rata pengerjaan konten jadi dari ide/skrip.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 4: JADWAL KURSUS (Ivory White Theme) -->
+    <section id="jadwal" class="py-24 bg-ivoryWhite text-indigoDark">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+                <span class="text-goldSecondary uppercase tracking-widest font-extrabold text-xs">JADWAL & MODUL MATERI</span>
+                <h2 class="text-3xl sm:text-4xl font-black tracking-tight">4 Sesi Intuitif Pembelajaran</h2>
+                <div class="w-24 h-1 bg-goldPrimary mx-auto rounded-full"></div>
+                <p class="text-slate-600 font-medium text-sm sm:text-base">
+                    Sesi diadakan pukul <strong>19.00 – 21.00 WIB</strong> secara interaktif melalui platform Zoom / Google Meet.
+                </p>
+            </div>
+
+            <!-- Interactive Sesi Timeline Switcher -->
+            <div class="space-y-8 relative">
+                <!-- Vertical Line of Timeline -->
+                <div class="absolute left-4 sm:left-1/2 top-4 bottom-4 w-1 bg-gradient-to-b from-goldPrimary via-indigo-600 to-indigo-950 -translate-x-1/2 hidden sm:block"></div>
+
+                <!-- Sesi 1 -->
+                <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
+                    <div class="sm:text-right sm:pr-12">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-indigoDark text-white mb-2 shadow-sm">Sesi 1</span>
+                        <h4 class="text-lg font-bold text-goldSecondary">Senin, 20 Juli 2026</h4>
+                        <h3 class="text-xl sm:text-2xl font-black text-indigoDark mt-1">Digital Storytelling dalam Bisnis</h3>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-user-tie mr-1"></i> Dibawakan oleh: Izaleven</p>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Jam: 19:00 - 21:00 &nbsp;•&nbsp; <i class="fa-solid fa-video mr-1"></i> Via: Zoom Meet</p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-indigoDark border-4 border-goldPrimary items-center justify-center hidden sm:flex z-10 shadow">
+                        <span class="text-[10px] text-white font-extrabold">1</span>
+                    </div>
+                    <div class="bg-ivoryCard p-6 rounded-3xl border border-indigo-950/5 sm:pl-12 hover:shadow-xl transition-shadow">
+                        <h5 class="font-extrabold text-sm text-slate-800 uppercase tracking-wider mb-2">Key Takeaways & Fokus</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Meramu narasi produk yang menyentuh emosi pembeli, struktur penulisan teks promosi yang mengundang konversi tinggi, serta melakukan riset ide konten viral dibantu kecerdasan buatan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sesi 2 -->
+                <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
+                    <!-- Reverse Order on Desktop for alternate timeline look -->
+                    <div class="bg-ivoryCard p-6 rounded-3xl border border-indigo-950/5 sm:pr-12 hover:shadow-xl transition-shadow order-2 sm:order-1 sm:text-right">
+                        <h5 class="font-extrabold text-sm text-slate-800 uppercase tracking-wider mb-2">Key Takeaways & Fokus</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Membuat landing page profesional dalam hitungan menit menggunakan generator website AI, mengonfigurasi formulir pendaftaran, integrasi domain, dan strategi optimasi peletakan tombol CTA.
+                        </p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-indigoDark border-4 border-goldPrimary items-center justify-center hidden sm:flex z-10 shadow order-2">
+                        <span class="text-[10px] text-white font-extrabold">2</span>
+                    </div>
+                    <div class="sm:pl-12 order-1 sm:order-3">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-indigoDark text-white mb-2 shadow-sm">Sesi 2</span>
+                        <h4 class="text-lg font-bold text-goldSecondary">Rabu, 23 Juli 2026</h4>
+                        <h3 class="text-xl sm:text-2xl font-black text-indigoDark mt-1">Bangun Website dengan AI</h3>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-user-tie mr-1"></i> Dibawakan oleh: Tiara Ann</p>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Jam: 19:00 - 21:00 &nbsp;•&nbsp; <i class="fa-solid fa-video mr-1"></i> Via: Zoom Meet</p>
+                    </div>
+                </div>
+
+                <!-- Sesi 3 -->
+                <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
+                    <div class="sm:text-right sm:pr-12">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-indigoDark text-white mb-2 shadow-sm">Sesi 3</span>
+                        <h4 class="text-lg font-bold text-goldSecondary">Senin, 27 Juli 2026</h4>
+                        <h3 class="text-xl sm:text-2xl font-black text-indigoDark mt-1">Operasional Bisnis berbasis AI</h3>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-user-tie mr-1"></i> Dibawakan oleh: Briano Ferari</p>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Jam: 19:00 - 21:00 &nbsp;•&nbsp; <i class="fa-solid fa-video mr-1"></i> Via: Zoom Meet</p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-indigoDark border-4 border-goldPrimary items-center justify-center hidden sm:flex z-10 shadow">
+                        <span class="text-[10px] text-white font-extrabold">3</span>
+                    </div>
+                    <div class="bg-ivoryCard p-6 rounded-3xl border border-indigo-950/5 sm:pl-12 hover:shadow-xl transition-shadow">
+                        <h5 class="font-extrabold text-sm text-slate-800 uppercase tracking-wider mb-2">Key Takeaways & Fokus</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Menyusun pelacakan stok otomatis, merancang sistem pergudangan (inventory control), serta integrasi otomatis laporan mingguan operasional tanpa perlu setup server manual.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sesi 4 -->
+                <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
+                    <div class="bg-ivoryCard p-6 rounded-3xl border border-indigo-950/5 sm:pr-12 hover:shadow-xl transition-shadow order-2 sm:order-1 sm:text-right">
+                        <h5 class="font-extrabold text-sm text-slate-800 uppercase tracking-wider mb-2">Key Takeaways & Fokus</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Men-generate video promosi yang dinamis dan tidak kaku, sinkronisasi suara AI natural, visualisasi karakter, serta penggabungan template editing cepat.
+                        </p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-indigoDark border-4 border-goldPrimary items-center justify-center hidden sm:flex z-10 shadow order-2">
+                        <span class="text-[10px] text-white font-extrabold">4</span>
+                    </div>
+                    <div class="sm:pl-12 order-1 sm:order-3">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-indigoDark text-white mb-2 shadow-sm">Sesi 4</span>
+                        <h4 class="text-lg font-bold text-goldSecondary">Rabu, 30 Juli 2026</h4>
+                        <h3 class="text-xl sm:text-2xl font-black text-indigoDark mt-1">Video Promosi dengan AI</h3>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-user-tie mr-1"></i> Dibawakan oleh: Ridhowi Ans</p>
+                        <p class="text-xs text-slate-500 mt-1 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Jam: 19:00 - 21:00 &nbsp;•&nbsp; <i class="fa-solid fa-video mr-1"></i> Via: Zoom Meet</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Warning styled system alert box for certificate schedule validity -->
+            <div class="mt-16 bg-amber-50 border-l-4 border-goldPrimary p-6 rounded-2xl shadow-sm">
+                <div class="flex items-start">
+                    <span class="text-goldSecondary text-xl mr-4"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                    <div>
+                        <h4 class="font-bold text-indigoDark text-sm sm:text-base">Pemberitahuan Sertifikat Resmi</h4>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                            Tanggal pelaksanaan di atas bersifat mutlak (fixed) dan akan langsung tercetak resmi pada sertifikat kelulusan Anda, tidak bergantung pada waktu pengisian formulir pendaftaran. Pengisian form kehadiran/presensi per sesi tetap diwajibkan untuk validasi klaim.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 5: SERTIFIKAT VALIDASI & OUTCOMES (Dark Indigo Theme with Fictional Learner Profile) -->
+    <section id="sertifikat" class="py-24 bg-indigoDark text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left Side: Copywriter info -->
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-goldPrimary uppercase tracking-widest font-extrabold text-xs">VERIFIKASI INTEGRITAS TINGGI</span>
+                    <h2 class="text-3xl sm:text-4xl font-black tracking-tight leading-tight">Integritas Sertifikasi Resmi & Terverifikasi</h2>
+                    <div class="w-16 h-1 bg-goldPrimary rounded-full"></div>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Kami menjamin orisinalitas sertifikat setiap lulusan melalui integrasi QR Code dinamis dan format serial database unik. Sistem ini mencegah duplikasi ataupun pemalsuan data demi menjaga integritas kompetensi lulusan kami.
+                    </p>
+                    <ul class="space-y-4 text-sm text-slate-200">
+                        <li class="flex items-center gap-3">
+                            <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigoMuted text-goldPrimary"><i class="fa-solid fa-shield-halved"></i></span>
+                            <span>QR Code unik terhubung langsung ke domain verifikasi.</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigoMuted text-goldPrimary"><i class="fa-solid fa-certificate"></i></span>
+                            <span>Sertifikat digital dalam format Landscape premium A4 White-Indigo.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right Side: Interactive Certificate Outcomes Showcase Layout (M1 Requirement) -->
+                <div class="lg:col-span-7 flex justify-center">
+                    <div class="relative w-full max-w-xl bg-gradient-to-br from-indigoCard via-[#121634] to-indigoDark border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-hidden group">
+                        
+                        <!-- Top Header Grid -->
+                        <div class="flex items-center justify-between border-b border-white/5 pb-4 mb-4">
+                            <div class="flex items-center space-x-3">
+                                <!-- Fictional Profile avatar -->
+                                <div class="w-12 h-12 rounded-full border border-goldPrimary/40 overflow-hidden bg-indigoMuted flex items-center justify-center text-goldPrimary text-lg">
+                                    <i class="fa-solid fa-user-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Pratama Wijaya</h4>
+                                    <p class="text-[10px] text-emerald-400 font-semibold tracking-wider flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> Lulusan Terbaik #1
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-2.5 py-1 rounded bg-goldPrimary/10 border border-goldPrimary/30 text-[10px] font-bold text-goldPrimary tracking-wider uppercase">Verified Alumni</span>
+                            </div>
+                        </div>
+
+                        <!-- Main Content Grid: Skills vs Tools -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-2">
+                            <!-- Column 1: Skills -->
+                            <div class="space-y-3">
+                                <h5 class="text-xs font-bold uppercase tracking-wider text-goldPrimary flex items-center gap-2">
+                                    <i class="fa-solid fa-bolt text-xs"></i> Skill yang Dikuasai:
+                                </h5>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex items-center space-x-2.5 bg-indigoDark/80 p-2.5 rounded-xl border border-white/5">
+                                        <i class="fa-solid fa-pen-nib text-indigo-400 text-xs"></i>
+                                        <span class="text-xs font-medium text-slate-200">Copywriting Konversi Tinggi</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2.5 bg-indigoDark/80 p-2.5 rounded-xl border border-white/5">
+                                        <i class="fa-solid fa-cubes text-indigo-400 text-xs"></i>
+                                        <span class="text-xs font-medium text-slate-200">No-Code Architecture</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2.5 bg-indigoDark/80 p-2.5 rounded-xl border border-white/5">
+                                        <i class="fa-solid fa-network-wired text-indigo-400 text-xs"></i>
+                                        <span class="text-xs font-medium text-slate-200">Automasi Operasional</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2.5 bg-indigoDark/80 p-2.5 rounded-xl border border-white/5">
+                                        <i class="fa-solid fa-clapperboard text-indigo-400 text-xs"></i>
+                                        <span class="text-xs font-medium text-slate-200">Video Generatif AI</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Column 2: Tools -->
+                            <div class="space-y-3">
+                                <h5 class="text-xs font-bold uppercase tracking-wider text-goldPrimary flex items-center gap-2">
+                                    <i class="fa-solid fa-screwdriver-wrench text-xs"></i> Tools yang Dikuasai:
+                                </h5>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="flex flex-col items-center justify-center bg-indigoDark/80 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all text-center">
+                                        <i class="fa-solid fa-wand-magic-sparkles text-goldPrimary text-base mb-1"></i>
+                                        <span class="text-[9px] font-bold text-slate-300">ChatGPT Pro</span>
+                                    </div>
+                                    <div class="flex flex-col items-center justify-center bg-indigoDark/80 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all text-center">
+                                        <i class="fa-solid fa-gears text-indigo-400 text-base mb-1"></i>
+                                        <span class="text-[9px] font-bold text-slate-300">Make.com</span>
+                                    </div>
+                                    <div class="flex flex-col items-center justify-center bg-indigoDark/80 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all text-center">
+                                        <i class="fa-solid fa-code text-indigo-400 text-base mb-1"></i>
+                                        <span class="text-[9px] font-bold text-slate-300">No-Code Builder</span>
+                                    </div>
+                                    <div class="flex flex-col items-center justify-center bg-indigoDark/80 p-3 rounded-xl border border-white/5 hover:border-goldPrimary/20 transition-all text-center">
+                                        <i class="fa-solid fa-video text-goldPrimary text-base mb-1"></i>
+                                        <span class="text-[9px] font-bold text-slate-300">AI Video Suite</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Details including QR Validation placeholder and verification serial -->
+                        <div class="flex items-end justify-between text-left mt-4 border-t border-white/5 pt-4">
+                            <div class="space-y-1">
+                                <p class="text-[8px] sm:text-[10px] text-slate-400">Atas Kelulusan Sesi:</p>
+                                <p class="text-[10px] sm:text-xs text-white font-extrabold tracking-wide">AI CREATOR CAMP 2026</p>
+                                <p class="text-[8px] text-slate-400 mt-1">Status Verifikasi: <span class="text-emerald-400 font-bold">Terverifikasi Publik</span></p>
+                            </div>
+                            <!-- Mock QR Code verification -->
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-white p-1 rounded-lg flex items-center justify-center shadow mx-auto">
+                                    <svg class="w-full h-full text-indigoDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 3h6v6H3V3zM3 15h6v6H3v-6zM15 3h6v6h-6V3z" />
+                                        <path d="M15 15h3v3h-3v-3zM18 18h3v3h-3v-3zM15 18h3v3h-3v-3z" />
+                                        <path d="M18 15h3v3h-3v-3z" />
+                                    </svg>
+                                </div>
+                                <p class="text-[7px] text-slate-300 font-mono tracking-wider mt-1">ID: ACC-S1-0149</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Countdown Element (Sub-banner before Pricing) -->
+    <div class="bg-gradient-to-r from-indigoMuted via-indigoCard to-indigoDark py-10 border-y border-white/5 text-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <h4 class="text-lg font-bold text-goldPrimary"><span class="animate-ping inline-block w-2.5 h-2.5 rounded-full bg-red-500 mr-2.5"></span>🚨 PROMO EARLY BIRD 50% SISA:</h4>
+                <p class="text-xs text-slate-300">Penawaran diskon ini ditutup pada <strong class="text-white">Senin, 13 Juli 2026 Pukul 23:59 WIB</strong></p>
+            </div>
+            <!-- Dynamic Timer Grid -->
+            <div class="grid grid-cols-4 gap-4" id="countdown-timer">
+                <div class="bg-indigoDark/80 border border-goldPrimary/40 rounded-xl px-3 py-2 w-16 sm:w-20">
+                    <span class="block text-xl sm:text-2xl font-extrabold text-white" id="timer-days">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400">Hari</span>
+                </div>
+                <div class="bg-indigoDark/80 border border-goldPrimary/40 rounded-xl px-3 py-2 w-16 sm:w-20">
+                    <span class="block text-xl sm:text-2xl font-extrabold text-white" id="timer-hours">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400">Jam</span>
+                </div>
+                <div class="bg-indigoDark/80 border border-goldPrimary/40 rounded-xl px-3 py-2 w-16 sm:w-20">
+                    <span class="block text-xl sm:text-2xl font-extrabold text-white" id="timer-minutes">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400">Menit</span>
+                </div>
+                <div class="bg-indigoDark/80 border border-goldPrimary/40 rounded-xl px-3 py-2 w-16 sm:w-20">
+                    <span class="block text-xl sm:text-2xl font-extrabold text-white" id="timer-seconds">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400">Detik</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 6: PRICING & INVESTMENT TABLE (Ivory White Theme) -->
+    <section id="paket" class="py-24 bg-ivoryWhite text-indigoDark relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+                <span class="text-goldSecondary uppercase tracking-widest font-extrabold text-xs">PILIH INVESTASI INVESTASIMU</span>
+                <h2 class="text-3xl sm:text-4xl font-black tracking-tight">Investasi Terbaik Untuk Masa Depanmu</h2>
+                <div class="w-24 h-1 bg-goldPrimary mx-auto rounded-full"></div>
+                <p class="text-slate-600 font-medium text-sm sm:text-base">
+                    Pilih paket belajar yang paling sesuai dengan target kompetensi dan kebutuhan bisnismu.
+                </p>
+            </div>
+
+            <!-- Two-Column Comparison Cards (Silver vs Gold VIP) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                
+                <!-- Card 1: Silver Card -->
+                <div class="bg-ivoryCard rounded-3xl border border-indigo-900/10 p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center">
+                            <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-slate-200 text-slate-800 tracking-wider uppercase">🥈 Paket Silver</span>
+                        </div>
+                        
+                        <!-- Pricing details -->
+                        <div class="space-y-1">
+                            <p class="text-xs text-slate-500 line-through font-semibold">Harga Normal: Rp100.000</p>
+                            <h3 class="text-3xl sm:text-4xl font-extrabold text-indigoDark flex items-baseline gap-2">
+                                <span>Rp50.000</span>
+                                <span class="text-xs text-slate-400 font-medium">/ Sekali bayar</span>
+                            </h3>
+                            <span class="inline-block px-3 py-1 rounded-lg text-[10px] font-bold bg-amber-200 text-amber-800">Early Bird Diskon 50%</span>
+                        </div>
+
+                        <div class="w-full h-[1px] bg-slate-200"></div>
+
+                        <!-- Perks List -->
+                        <ul class="space-y-3.5 text-sm text-slate-700">
+                            <li class="flex items-center gap-3">
+                                <span class="text-emerald-600"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Akses Live 4 Sesi Pembelajaran</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-emerald-600"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Sertifikat Resmi Terintegrasi QR Code</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-emerald-600"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Rekaman Sesi Selamanya</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-emerald-600"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Grup Komunitas Utama</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-400 line-through">
+                                <span><i class="fa-solid fa-square-xmark"></i></span>
+                                <span>Template & Prompt AI Kit (Siap Pakai)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-400 line-through">
+                                <span><i class="fa-solid fa-square-xmark"></i></span>
+                                <span>Grup Private Progress Review Izaleven</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-400 line-through">
+                                <span><i class="fa-solid fa-square-xmark"></i></span>
+                                <span>Konseling Privat 1-on-1 (20 Menit)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div class="pt-8">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScqYdMvX3tjwPsDk6BtJ4LRMpehJAzLTOp5QHe6ZmEjvTTn6A/viewform?usp=dialog" 
+                           target="_blank"
+                           class="block text-center w-full py-4 rounded-2xl bg-indigoDark hover:bg-indigo-950 text-white font-extrabold text-sm tracking-wide transition-colors">
+                            Daftar Paket Silver
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Gold VIP Card -->
+                <div class="bg-indigoDark text-white rounded-3xl border-2 border-goldPrimary p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(229,184,66,0.3)] hover:-translate-y-1 relative overflow-hidden">
+                    <!-- Most popular gold ribbon -->
+                    <div class="absolute top-0 right-0 bg-gradient-to-r from-goldPrimary to-yellow-600 text-indigoDark font-extrabold text-[10px] uppercase tracking-widest px-6 py-2 rotate-45 translate-x-8 translate-y-4">
+                        Paling Populer
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center">
+                            <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-goldPrimary text-indigoDark tracking-wider uppercase">🥇 Paket Gold VIP</span>
+                        </div>
+                        
+                        <!-- Pricing details -->
+                        <div class="space-y-1">
+                            <p class="text-xs text-slate-400 line-through font-semibold">Harga Normal: Rp200.000</p>
+                            <h3 class="text-3xl sm:text-4xl font-extrabold text-goldPrimary flex items-baseline gap-2">
+                                <span>Rp100.000</span>
+                                <span class="text-xs text-slate-400 font-medium">/ Sekali bayar</span>
+                            </h3>
+                            <span class="inline-block px-3 py-1 rounded-lg text-[10px] font-bold bg-indigo-900 text-goldPrimary">Early Bird Diskon 50%</span>
+                        </div>
+
+                        <div class="w-full h-[1px] bg-white/10"></div>
+
+                        <!-- Perks List -->
+                        <ul class="space-y-3.5 text-sm text-slate-200">
+                            <li class="flex items-center gap-3">
+                                <span class="text-goldPrimary"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Akses Live 4 Sesi Pembelajaran</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-goldPrimary"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Sertifikat Resmi Terintegrasi QR Code</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-goldPrimary"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Rekaman Sesi Selamanya</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-goldPrimary"><i class="fa-solid fa-square-check"></i></span>
+                                <span>Grup Komunitas Utama</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-goldPrimary font-extrabold">
+                                <span><i class="fa-solid fa-circle-check animate-pulse"></i></span>
+                                <span>Template & Prompt AI Kit (Siap Pakai)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-goldPrimary font-extrabold">
+                                <span><i class="fa-solid fa-circle-check animate-pulse"></i></span>
+                                <span>Grup Private Progress Review Izaleven</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-goldPrimary font-extrabold">
+                                <span><i class="fa-solid fa-circle-check animate-pulse"></i></span>
+                                <span>Konseling Privat 1-on-1 (Eksklusif 20 Menit)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div class="pt-8 space-y-3">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScqYdMvX3tjwPsDk6BtJ4LRMpehJAzLTOp5QHe6ZmEjvTTn6A/viewform?usp=dialog" 
+                           target="_blank"
+                           class="block text-center w-full py-4 rounded-2xl bg-gradient-to-r from-goldPrimary via-yellow-500 to-amber-500 text-indigoDark font-extrabold text-sm tracking-wider transition-colors shadow-lg shadow-goldPrimary/20">
+                            Daftar Paket Gold VIP
+                        </a>
+                        <p class="text-[10px] text-center text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i> Slot bimbingan dibatasi ketat demi menjaga kualitas interaksi.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 6.5: DYNAMIC TESTIMONIAL SLIDER (Ivory White to Indigo Transition Zone) -->
+    <section class="py-24 bg-indigoDark text-white relative border-t border-white/5 overflow-hidden">
+        <!-- Background Ambient Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-goldPrimary/5 blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+                <span class="text-goldPrimary uppercase tracking-widest font-extrabold text-xs">CERITA SUKSES ALUMNI</span>
+                <h2 class="text-3xl sm:text-4xl font-black tracking-tight">Apa Kata Mereka?</h2>
+                <div class="w-16 h-1 bg-goldPrimary mx-auto rounded-full"></div>
+                <p class="text-slate-300 text-xs sm:text-sm">
+                    Ulasan langsung dari para member yang berhasil melipatgandakan produktivitas dan memotong proses operasional harian mereka.
+                </p>
+            </div>
+
+            <!-- Testimonial Carousel Wrapper -->
+            <div class="relative w-full overflow-hidden bg-indigoCard/60 border border-white/10 rounded-3xl p-8 sm:p-12 shadow-2xl">
+                <!-- Quotation Mark Decor -->
+                <div class="absolute top-4 left-6 text-white/5 text-8xl font-serif pointer-events-none">“</div>
+                
+                <div class="relative h-48 sm:h-36">
+                    <!-- Slide 1 -->
+                    <div class="testimonial-slide absolute inset-0 opacity-100 transition-opacity duration-500 flex flex-col justify-between" data-index="0">
+                        <p class="text-sm sm:text-base text-slate-200 leading-relaxed italic">
+                            "Berkat materi No-Code di AI Creator Camp, portofolio landing page jasa desain saya selesai hanya dalam 3 hari! Saat ini saya sudah menggunakannya untuk closing 2 klien baru."
+                        </p>
+                        <div class="flex items-center gap-3.5 mt-4">
+                            <div class="w-10 h-10 rounded-full bg-goldPrimary/20 border border-goldPrimary/40 flex items-center justify-center text-goldPrimary text-sm font-bold">BS</div>
+                            <div>
+                                <h5 class="font-extrabold text-sm text-white">Budi Santoso</h5>
+                                <p class="text-[10px] text-slate-400">Mahasiswa & Freelancer — Jakarta</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="testimonial-slide absolute inset-0 opacity-0 transition-opacity duration-500 flex flex-col justify-between" data-index="1">
+                        <p class="text-sm sm:text-base text-slate-200 leading-relaxed italic">
+                            "Dulu saya bayar agensi jutaan rupiah tiap bulan untuk buat video promosi dan landing page produk UMKM kerajinan saya. Setelah tahu polanya di kelas ini, saya bisa bikin semuanya sendiri pakai AI dalam hitungan menit!"
+                        </p>
+                        <div class="flex items-center gap-3.5 mt-4">
+                            <div class="w-10 h-10 rounded-full bg-goldPrimary/20 border border-goldPrimary/40 flex items-center justify-center text-goldPrimary text-sm font-bold">SR</div>
+                            <div>
+                                <h5 class="font-extrabold text-sm text-white">Siti Rahma</h5>
+                                <p class="text-[10px] text-slate-400">Owner Crafty-Go (UMKM) — Yogyakarta</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="testimonial-slide absolute inset-0 opacity-0 transition-opacity duration-500 flex flex-col justify-between" data-index="2">
+                        <p class="text-sm sm:text-base text-slate-200 leading-relaxed italic">
+                            "Sistem otomatisasi inventaris barang yang diajarkan Kak Dian bener-bener membantu. Operasional pergudangan toko kelontong online saya jadi tersinkronisasi otomatis ke Google Sheets tanpa ribet entri data manual."
+                        </p>
+                        <div class="flex items-center gap-3.5 mt-4">
+                            <div class="w-10 h-10 rounded-full bg-goldPrimary/20 border border-goldPrimary/40 flex items-center justify-center text-goldPrimary text-sm font-bold">KW</div>
+                            <div>
+                                <h5 class="font-extrabold text-sm text-white">Kevin Wijaya</h5>
+                                <p class="text-[10px] text-slate-400">Freelancer Sistem Integrator — Surabaya</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="testimonial-slide absolute inset-0 opacity-0 transition-opacity duration-500 flex flex-col justify-between" data-index="3">
+                        <p class="text-sm sm:text-base text-slate-200 leading-relaxed italic">
+                            "Materi Digital Storytelling Mas Izaleven luar biasa bermanfaat. Formula teks promosinya langsung saya terapkan ke video TikTok buatan AI, hasilnya langsung tembus 150 ribu views organik!"
+                        </p>
+                        <div class="flex items-center gap-3.5 mt-4">
+                            <div class="w-10 h-10 rounded-full bg-goldPrimary/20 border border-goldPrimary/40 flex items-center justify-center text-goldPrimary text-sm font-bold">DL</div>
+                            <div>
+                                <h5 class="font-extrabold text-sm text-white">Dewi Lestari</h5>
+                                <p class="text-[10px] text-slate-400">Content Creator & Affiliator — Bandung</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="testimonial-slide absolute inset-0 opacity-0 transition-opacity duration-500 flex flex-col justify-between" data-index="4">
+                        <p class="text-sm sm:text-base text-slate-200 leading-relaxed italic">
+                            "Sertifikat resmi terverifikasi QR Code camp ini benar-benar valid. Saya sempat tunjukkan ke calon klien internasional di platform freelance, dan itu memberi nilai tambah tersendiri bagi kredibilitas layanan saya."
+                        </p>
+                        <div class="flex items-center gap-3.5 mt-4">
+                            <div class="w-10 h-10 rounded-full bg-goldPrimary/20 border border-goldPrimary/40 flex items-center justify-center text-goldPrimary text-sm font-bold">RP</div>
+                            <div>
+                                <h5 class="font-extrabold text-sm text-white">Rian Pratama</h5>
+                                <p class="text-[10px] text-slate-400">Fulltime Remote Freelancer — Semarang</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Dots Indicator -->
+                <div class="flex justify-center items-center gap-2 mt-8">
+                    <button class="w-2.5 h-2.5 rounded-full bg-goldPrimary testimonial-dot" data-slide="0"></button>
+                    <button class="w-2.5 h-2.5 rounded-full bg-white/20 testimonial-dot" data-slide="1"></button>
+                    <button class="w-2.5 h-2.5 rounded-full bg-white/20 testimonial-dot" data-slide="2"></button>
+                    <button class="w-2.5 h-2.5 rounded-full bg-white/20 testimonial-dot" data-slide="3"></button>
+                    <button class="w-2.5 h-2.5 rounded-full bg-white/20 testimonial-dot" data-slide="4"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: BOTTOM STICKY & FINAL CTA FOOTER (Dark Indigo Theme) -->
+    <section class="py-24 bg-indigoDark text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(229,184,66,0.05),transparent_60%)]"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-8">
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                Amankan Kursimu Sekarang <br>
+                <span class="bg-gradient-to-r from-goldPrimary to-amber-500 bg-clip-text text-transparent">Sebelum Harga Naik 2x Lipat!</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-300 max-w-xl mx-auto leading-relaxed">
+                Tingkatkan efisiensi kerja dan bisnismu hingga 300% menggunakan kehebatan teknologi AI.
+            </p>
+            
+            <div class="pt-4">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScqYdMvX3tjwPsDk6BtJ4LRMpehJAzLTOp5QHe6ZmEjvTTn6A/viewform?usp=dialog" 
+                   target="_blank"
+                   class="pulse-gold inline-flex items-center px-10 py-5 rounded-3xl bg-gradient-to-r from-goldPrimary via-yellow-500 to-amber-600 text-indigoDark font-extrabold text-lg tracking-wider transition-transform">
+                    <span>DAFTAR AI CREATOR CAMP SEKARANG</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-3"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sticky Floating Action Banner (Appears on Scroll down) -->
+        <div id="sticky-bar" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-indigoDark/90 backdrop-blur-xl border border-goldPrimary/40 px-6 py-4 rounded-3xl flex items-center justify-between gap-8 z-50 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-500 opacity-0 translate-y-10 pointer-events-none max-w-md sm:max-w-xl w-[90%]">
+            <div class="text-left hidden sm:block">
+                <h5 class="text-xs font-bold text-goldPrimary">AI Creator Camp 2026</h5>
+                <p class="text-[10px] text-slate-300">Dapatkan diskon 50% selama masa promo.</p>
+            </div>
+            <div class="w-full sm:w-auto flex justify-between items-center sm:gap-4">
+                <span class="text-sm font-extrabold text-white">Mulai Rp50.000</span>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScqYdMvX3tjwPsDk6BtJ4LRMpehJAzLTOp5QHe6ZmEjvTTn6A/viewform?usp=dialog" 
+                   target="_blank"
+                   class="px-5 py-2.5 rounded-xl bg-goldPrimary hover:bg-goldSecondary text-indigoDark font-extrabold text-xs tracking-wider transition-all">
+                    Daftar Sekarang
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer Credits -->
+        <div class="mt-24 pt-8 border-t border-white/5 text-center text-xs text-slate-500">
+            <p>&copy; 2026 AI Creator Camp. All rights reserved. Managed by Nevel Studio.</p>
+        </div>
+    </section>
+
+    <!-- Mentor Photo Lightbox Modal (mobile-triggered) -->
+    <div id="photo-lightbox" class="hidden fixed inset-0 z-[100] bg-indigoDark/95 backdrop-blur-sm items-center justify-center p-6" onclick="closePhotoLightbox()">
+        <button class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center text-xl hover:bg-white/20 transition-colors" aria-label="Tutup" onclick="closePhotoLightbox()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="max-w-md w-full text-center" onclick="event.stopPropagation()">
+            <img id="photo-lightbox-img" src="" alt="" class="w-full h-auto rounded-2xl border border-goldPrimary/30 shadow-2xl">
+            <p id="photo-lightbox-name" class="mt-4 text-white font-bold text-lg"></p>
+        </div>
+    </div>
+
+    <!-- Fully Interactive Scripts (Countdown, Canvas, Live Certificate Name Customizer, Sticky Banner Visibility) -->
+    <script>
+        // 0. Mentor Photo Popup (only active on mobile/touch viewport)
+        function isMobileViewport() {
+            return window.matchMedia("(max-width: 768px)").matches;
+        }
+
+        function openPhotoLightbox(imgSrc, name) {
+            const modal = document.getElementById('photo-lightbox');
+            document.getElementById('photo-lightbox-img').src = imgSrc;
+            document.getElementById('photo-lightbox-img').alt = name;
+            document.getElementById('photo-lightbox-name').innerText = name;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePhotoLightbox() {
+            const modal = document.getElementById('photo-lightbox');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.mentor-photo').forEach((photoEl) => {
+            photoEl.addEventListener('click', () => {
+                if (!isMobileViewport()) return; // desktop: no popup, no behavior change
+                const img = photoEl.querySelector('img');
+                const name = photoEl.getAttribute('data-name') || img.alt;
+                openPhotoLightbox(img.src, name);
+            });
+        });
+
+        // 1. Particle Canvas Simulation on Hero Section
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.baseX = x;
+                this.baseY = y;
+                this.size = Math.random() * 2 + 1;
+                this.density = (Math.random() * 30) + 15;
+            }
+            draw() {
+                ctx.fillStyle = '#E5B842';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 10;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 10;
+                    }
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (canvas.width * canvas.height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let x = Math.random() * canvas.width;
+                let y = Math.random() * canvas.height;
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].draw();
+                particles[i].update();
+            }
+            connectParticles();
+            requestAnimationFrame(animateParticles);
+        }
+
+        function connectParticles() {
+            let opacityValue = 1;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        opacityValue = 1 - (distance / 100);
+                        ctx.strokeStyle = `rgba(229, 184, 66, ${opacityValue * 0.15})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        window.addEventListener('mouseout', () => {
+            mouse.x = undefined;
+            mouse.y = undefined;
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+        window.onload = function() {
+            resizeCanvas();
+            animateParticles();
+        };
+
+        // 2. Real-time Countdown Timer (Target: Monday, 13 July 2026, 23:59:00 WIB)
+        const targetDate = new Date("July 13, 2026 23:59:00").getTime();
+
+        const timerDays = document.getElementById("timer-days");
+        const timerHours = document.getElementById("timer-hours");
+        const timerMinutes = document.getElementById("timer-minutes");
+        const timerSeconds = document.getElementById("timer-seconds");
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                // If countdown elapsed, show zeros
+                timerDays.innerText = "00";
+                timerHours.innerText = "00";
+                timerMinutes.innerText = "00";
+                timerSeconds.innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            timerDays.innerText = days < 10 ? "0" + days : days;
+            timerHours.innerText = hours < 10 ? "0" + hours : hours;
+            timerMinutes.innerText = minutes < 10 ? "0" + minutes : minutes;
+            timerSeconds.innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 3. Testimonial Infinite Carousel Logic (Autoplay every 3s - M2 Requirement)
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.testimonial-dot');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function goToSlide(index) {
+            slides.forEach((slide) => {
+                slide.classList.remove('opacity-100');
+                slide.classList.add('opacity-0', 'pointer-events-none');
+            });
+            dots.forEach((dot) => {
+                dot.classList.remove('bg-goldPrimary');
+                dot.classList.add('bg-white/20');
+            });
+
+            slides[index].classList.remove('opacity-0', 'pointer-events-none');
+            slides[index].classList.add('opacity-100');
+            dots[index].classList.remove('bg-white/20');
+            dots[index].classList.add('bg-goldPrimary');
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            let nextIndex = (currentSlide + 1) % totalSlides;
+            goToSlide(nextIndex);
+        }
+
+        // Click Event for Dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+            });
+        });
+
+        // Autoplay Carousel (3 seconds interval)
+        setInterval(nextSlide, 3000);
+
+        // 4. Sticky Floating Action Banner Scroll Visibility
+        const stickyBar = document.getElementById("sticky-bar");
+        window.addEventListener("scroll", function() {
+            // Reveal sticky banner when scrolled down beyond 600px
+            if (window.scrollY > 600) {
+                stickyBar.classList.remove("opacity-0", "translate-y-10", "pointer-events-none");
+                stickyBar.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
+            } else {
+                stickyBar.classList.add("opacity-0", "translate-y-10", "pointer-events-none");
+                stickyBar.classList.remove("opacity-100", "translate-y-0", "pointer-events-auto");
+            }
+        });
+
+        // 5. Mobile Hamburger Menu Toggle Script
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDropdown = document.getElementById('mobile-dropdown');
+        const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMobileMenu() {
+            const isClosed = mobileDropdown.classList.contains('hidden');
+            if (isClosed) {
+                mobileDropdown.classList.remove('hidden');
+                mobileMenuIcon.classList.remove('fa-bars');
+                mobileMenuIcon.classList.add('fa-xmark', 'rotate-90');
+            } else {
+                mobileDropdown.classList.add('hidden');
+                mobileMenuIcon.classList.remove('fa-xmark', 'rotate-90');
+                mobileMenuIcon.classList.add('fa-bars');
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Close menu immediately when clicking on any navigation link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDropdown.classList.add('hidden');
+                mobileMenuIcon.classList.remove('fa-xmark', 'rotate-90');
+                mobileMenuIcon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>
