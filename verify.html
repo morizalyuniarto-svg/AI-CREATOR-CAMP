@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verifikasi Sertifikat — AI Creator Camp</title>
+<style>
+  :root{
+    --indigo:#241B4D;
+    --indigo-soft:#2E2260;
+    --lavender:#EFEBFA;
+    --gold:#C6A15B;
+    --charcoal:#2A2A2A;
+    --gray:#6B6B76;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--indigo);
+    background-image: radial-gradient(circle at 20% 20%, rgba(198,161,91,0.12), transparent 40%),
+                       radial-gradient(circle at 80% 80%, rgba(198,161,91,0.10), transparent 40%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px;
+    color: var(--charcoal);
+  }
+  .card{
+    background:#fff;
+    border-radius: 20px;
+    max-width: 480px;
+    width:100%;
+    padding: 36px 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    border: 1px solid rgba(198,161,91,0.4);
+    text-align:center;
+  }
+  .brand{
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight:bold;
+    color: var(--indigo);
+    margin-bottom: 6px;
+  }
+  h1{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    margin: 0 0 24px 0;
+    color: var(--charcoal);
+  }
+  .status-icon{
+    width: 68px;height:68px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin: 0 auto 16px auto;
+    font-size: 32px;
+  }
+  .status-icon.valid{ background: #E8F7EE; color:#1E8E3E; }
+  .status-icon.invalid{ background:#FCEAEA; color:#C0392B; }
+  .status-icon.loading{ background: var(--lavender); color: var(--indigo); }
+  .status-text{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .status-text.valid{ color:#1E8E3E; }
+  .status-text.invalid{ color:#C0392B; }
+  .sub{
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+  .detail{
+    text-align:left;
+    background: var(--lavender);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display:none;
+  }
+  .detail.show{ display:block; }
+  .detail-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(36,27,77,0.08);
+    font-size: 13.5px;
+  }
+  .detail-row:last-child{ border-bottom:none; }
+  .detail-row .label{ color: var(--gray); }
+  .detail-row .value{ color: var(--indigo); font-weight:bold; text-align:right; }
+  .search-box{
+    margin-top: 20px;
+    display:flex;
+    gap:8px;
+  }
+  .search-box input{
+    flex:1;
+    border:1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .search-box button{
+    background: var(--indigo);
+    color:#fff;
+    border:none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .search-box button:hover{ background: var(--indigo-soft); }
+  .footer-note{
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--gray);
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="brand">AI CREATOR CAMP</div>
+  <h1>Verifikasi Sertifikat</h1>
+
+  <div id="icon" class="status-icon loading">⏳</div>
+  <div id="statusText" class="status-text">Memeriksa data...</div>
+  <div id="subText" class="sub">Mohon tunggu sebentar</div>
+
+  <div id="detail" class="detail">
+    <div class="detail-row"><span class="label">Nama Peserta</span><span class="value" id="dName">-</span></div>
+    <div class="detail-row"><span class="label">Sesi / Track</span><span class="value" id="dSesi">-</span></div>
+    <div class="detail-row"><span class="label">ID Sertifikat</span><span class="value" id="dId">-</span></div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="idInput" placeholder="Masukkan ID Sertifikat, mis. ACC-0001-4827">
+    <button onclick="searchManual()">Cek</button>
+  </div>
+
+  <div class="footer-note">Data diverifikasi langsung dari database resmi AI Creator Camp.</div>
+</div>
+
+<script>
+  // Ganti dengan ID Google Spreadsheet kamu
+  const SHEET_ID = "144NiiAZPLK9h11p4jyIwTUWA6G0x6tdWWBhlxYtFhc0";
+  const SHEET_NAME = "Form Responses 1";
+
+  // Index kolom (0-based) sesuai struktur sheet:
+  // A=0 Timestamp, B=1 Email, C=2 Nama Lengkap, D=3 WA, E=4 Status,
+  // F=5 Asal, G=6 Paket, H=7 Metode, I=8 Bukti, J=9 Sesi,
+  // K=10 Voucher, L=11 ID SERTIFIKAT, M=12 Link Verifikasi, N=13 QR CODE
+  const COL = { nama: 2, sesi: 9, id: 11 };
+
+  const iconEl = document.getElementById('icon');
+  const statusTextEl = document.getElementById('statusText');
+  const subTextEl = document.getElementById('subText');
+  const detailEl = document.getElementById('detail');
+
+  function setLoading(){
+    iconEl.className = 'status-icon loading';
+    iconEl.textContent = '⏳';
+    statusTextEl.className = 'status-text';
+    statusTextEl.textContent = 'Memeriksa data...';
+    subTextEl.textContent = 'Mohon tunggu sebentar';
+    detailEl.classList.remove('show');
+  }
+
+  function setValid(row){
+    iconEl.className = 'status-icon valid';
+    iconEl.textContent = '✓';
+    statusTextEl.className = 'status-text valid';
+    statusTextEl.textContent = 'Sertifikat Valid';
+    subTextEl.textContent = 'ID ini terdaftar resmi di database AI Creator Camp';
+    document.getElementById('dName').textContent = row[COL.nama] || '-';
+    document.getElementById('dSesi').textContent = row[COL.sesi] || '-';
+    document.getElementById('dId').textContent = row[COL.id] || '-';
+    detailEl.classList.add('show');
+  }
+
+  function setInvalid(){
+    iconEl.className = 'status-icon invalid';
+    iconEl.textContent = '✕';
+    statusTextEl.className = 'status-text invalid';
+    statusTextEl.textContent = 'ID Tidak Ditemukan';
+    subTextEl.textContent = 'Periksa kembali ID Sertifikat yang dimasukkan';
+    detailEl.classList.remove('show');
+  }
+
+  async function fetchRows(){
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const res = await fetch(url);
+    const text = await res.text();
+    const jsonStr = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
+    const data = JSON.parse(jsonStr);
+    return data.table.rows.map(r => r.c.map(cell => (cell && cell.v !== null && cell.v !== undefined) ? String(cell.v) : ''));
+  }
+
+  async function verify(id){
+    if(!id){
+      setInvalid();
+      subTextEl.textContent = 'Masukkan ID Sertifikat di bawah untuk memeriksa';
+      return;
+    }
+    setLoading();
+    try{
+      const rows = await fetchRows();
+      const match = rows.find(r => (r[COL.id] || '').trim().toUpperCase() === id.trim().toUpperCase());
+      if(match){
+        setValid(match);
+      } else {
+        setInvalid();
+      }
+    } catch(err){
+      iconEl.className = 'status-icon invalid';
+      iconEl.textContent = '!';
+      statusTextEl.className = 'status-text invalid';
+      statusTextEl.textContent = 'Gagal memuat data';
+      subTextEl.textContent = 'Coba lagi beberapa saat lagi';
+    }
+  }
+
+  function searchManual(){
+    const val = document.getElementById('idInput').value;
+    verify(val);
+  }
+
+  // Baca ?id= dari URL saat halaman dibuka (ini yang dipakai QR code)
+  const params = new URLSearchParams(window.location.search);
+  const idFromUrl = params.get('id');
+  if(idFromUrl){
+    document.getElementById('idInput').value = idFromUrl;
+    verify(idFromUrl);
+  } else {
+    setInvalid();
+    subTextEl.textContent = 'Masukkan ID Sertifikat di bawah untuk memeriksa';
+  }
+</script>
+
+</body>
+</html>
