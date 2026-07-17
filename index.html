@@ -1226,12 +1226,23 @@
             animateParticles();
         };
 
-        // 2. Real-time Countdown Timer (Target: Monday, 13 July 2026, 23:59:00 WIB)
-       const targetDate = new Date("July 20, 2026 18:59:00").getTime();
+// 2. Real-time Countdown Timer (Target Tetap: Senin, 20 Juli 2026, 18:59:00 WIB)
+// Menggunakan format ISO 8601 (+07:00 adalah penanda tegas untuk WIB)
+const targetDate = new Date("2026-07-20T18:59:00+07:00").getTime();
 
-const countdownInterval = setInterval(function() {
+function runCountdown() {
   const now = new Date().getTime();
   const distance = targetDate - now;
+
+  // Jika hitung mundur selesai
+  if (distance < 0) {
+    clearInterval(countdownInterval);
+    const countdownContainer = document.getElementById("countdown-container");
+    if (countdownContainer) {
+      countdownContainer.innerHTML = "<span class='text-amber-500 font-bold uppercase tracking-wider'>Promo Berakhir!</span>";
+    }
+    return; // Stop eksekusi sisa fungsi
+  }
 
   // Perhitungan waktu untuk hari, jam, menit, dan detik
   const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -1239,7 +1250,7 @@ const countdownInterval = setInterval(function() {
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  // Menyuntikkan hasil ke elemen HTML (sesuaikan ID dengan layout Anda)
+  // Menyuntikkan hasil ke elemen HTML
   const daysEl = document.getElementById("countdown-days");
   const hoursEl = document.getElementById("countdown-hours");
   const minutesEl = document.getElementById("countdown-minutes");
@@ -1249,17 +1260,13 @@ const countdownInterval = setInterval(function() {
   if (hoursEl) hoursEl.innerText = hours < 10 ? "0" + hours : hours;
   if (minutesEl) minutesEl.innerText = minutes < 10 ? "0" + minutes : minutes;
   if (secondsEl) secondsEl.innerText = seconds < 10 ? "0" + seconds : seconds;
+}
 
-  // Jika hitung mundur selesai
-  if (distance < 0) {
-    clearInterval(countdownInterval);
-    const countdownContainer = document.getElementById("countdown-container");
-    if (countdownContainer) {
-      countdownContainer.innerHTML = "<span class='text-amber-500 font-bold uppercase tracking-wider'>Promo Berakhir!</span>";
-    }
-  }
-}, 1000);
-        updateCountdown();
+// Jalankan fungsi sekali di awal biar user ga nunggu 1 detik pertama buat ngeliat angka
+runCountdown();
+
+// Set interval untuk update setiap 1 detik
+const countdownInterval = setInterval(runCountdown, 1000);
 
         // 3. Testimonial Infinite Carousel Logic (Autoplay every 3s - M2 Requirement)
         const slides = document.querySelectorAll('.testimonial-slide');
